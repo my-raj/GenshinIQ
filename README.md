@@ -65,3 +65,13 @@ be able to recommend sets in order to maximize each role if the player wishes.
 ## Long term endeavours
 
 ### AI/ML layer
+As usage data accumulates, the plan is to introduce a lightweight ML model that learns from player feedback on team recommendations-
+re-ranking suggestions based on what actually performs well in practice. This would allow the recommender to improve and adapt
+over time.
+
+I plan to also introduce a chatbot feature to the application for players to discuss other genshin-related topics: with regards
+to the quests, the lore, and the storyline.
+
+**STATUS: In progress**
+
+This project is currently still under development.
