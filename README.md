@@ -44,3 +44,17 @@ level, element type, artifacts (5 individual pieces) and their levels. The appli
 defense level, talent levels, and bonuses of each artifact and weapon that the character has on.
 
 The user additionally has the power to manually add, edit, and delete characters from the roster.
+
+## Planned Features
+
+### Team-recommender for Bosses
+This feature will be able to study all the data that had been imported from the character roster, match this data with other
+characters with elements and talents that would enhance this character's talents or spark reactions that will deal large
+damage, and curate a 4-member team whose combined talents and elemental reactions will be able to counteract those of the
+boss's and defeat it effectively.
+
+Currently, the feature's mathematical algorithms to calculate character powers and talent multipliers is under progress, but
+in the future, the feature may include an ML layer that can do the computing and crafting of the teams against the bosses.
+
+### Character-builder
+
