@@ -26,6 +26,16 @@ The very first prototype of this calculator was initially to take in the current
 on the current banner) of the player, calculate the probability of getting a 5-star at the current moment, and reveal that 
 to the user with a wish animation (a firework with the appropriate colour- gold for success and purple for persistence).
 However, since that ended up being too simple, and it only used obvious wishing logic and common sense, the calculator evolved
-into using a monte carlo based simulation that ran 100,000 simulations of wishing until the featured 5 star character was gotten
+into using a monte carlo based simulation that ran 100,000 simulations of wishing until the featured 5-star character was gotten
 and plotted a forecasted graph of probability against additional pulls/wishes spent from the current pity count to get the 
 featured 5 star.
+
+### Character Roster
+This was a sub-step before adding in the character-builder and the team-recommender for the in-game bosses.
+
+The beta-version of this feature initially included a form section where players had to manually enter in their character
+details, but for a game with 100+ characters, it would become increasingly harder for players with a lot of characters to 
+manually enter in their character details, which was why I had added a feature to allow players to import their characters
+automatically using their user ID from the game. Currently, the feature requires for players to update their in-game character
+showcase in batches of 12, and import these batches with 1-minute time intervals until all characters have been imported.
+
