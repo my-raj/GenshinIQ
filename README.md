@@ -14,3 +14,4 @@ build existing characters with the appropriate weapons and artifacts to improve 
 - **Frontend**: HTML, CSS, vanilla JavaScript  
 - **Database**: H2 (file-based)  
 - **External APIs**: Enka Network API, genshin-db-api  
+- **Dev Tools**: Node.js (one-time parsing of raw game data files)  
