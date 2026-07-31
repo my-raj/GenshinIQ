@@ -39,3 +39,8 @@ manually enter in their character details, which was why I had added a feature t
 automatically using their user ID from the game. Currently, the feature requires for players to update their in-game character
 showcase in batches of 12, and import these batches with 1-minute time intervals until all characters have been imported.
 
+Currently, the character details the application stores are the character's name, level, weapon, weapon level, constellation 
+level, artifacts (5 individual pieces) and their levels. The application also stores the base attack level, defense level,
+talent levels and bonuses of each artifact and weapon that the character has on.
+
+The user additionally has the power to manually add, edit, and delete characters from the roster.
