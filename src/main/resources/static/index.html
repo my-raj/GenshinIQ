@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Genshin Calculator</title>
+</head>
+
+<body>
+
+<div id="home-screen">
+    <div id="sky-background">
+    </div>
+    <canvas id="cloud-canvas"></canvas>
+    <canvas id="water-canvas"></canvas>
+    <div id="light-rays"></div>
+    <div id="door-scene">
+        <div id="door-container">
+            <div id="door-left-half">
+                <div id="door-panel-left">
+                    <div class="door-design-half"></div>
+                </div>
+            </div>
+            <div id="door-right-half">
+                <div id="door-panel-right">
+                    <div class="door-design-half"></div>
+                </div>
+            </div>
+            <div id="door-base"></div>
+        </div>
+        <div id="stairs">
+            <div class="stair stair-1"></div>
+            <div class="stair stair-2"></div>
+            <div class="stair stair-3"></div>
+        </div>
+    </div>
+    <div id="puddle"></div>
+    <div id="home-content">
+        <button id="start-btn">Begin Your Journey</button>
+    </div>
+</div>
+
+<div id="hub-screen">
+    <canvas id="hub-canvas"></canvas>
+    <div id="hub-content">
+        <div id="hub-title">
+            <h1>GenshinIQ</h1>
+        </div>
+        <div id="slider-container">
+            <div id="slider-track">
+                <div class="slide" id="slide-pity">
+                    <img class= "slide-bg-img" src="https://wallpapercave.com/wp/wp11063887.jpg" alt="">
+                    <div class="slide-content">
+                        <div class="slide-icon">✦</div>
+                        <h2>Pity Calculator</h2>
+                        <p>Calculate your odds of getting a 5★</p>
+                        <button class="slide-btn" id="card-pity">Calculate!</button>
+                    </div>
+                </div>
+                <div class="slide" id="slide-boss">
+                    <img class= "slide-bg-img" src="https://images8.alphacoders.com/117/thumb-1920-1177000.png" alt="">
+                    <div class="slide-content">
+                        <div class="slide-icon">⚔</div>
+                        <h2>Boss Recommender</h2>
+                        <p>Find the best team for every weekly boss</p>
+                        <button class="slide-btn" id="card-boss">Optimize!</button>
+                    </div>
+                </div>
+                <div class="slide" id="slide-build">
+                    <img class= "slide-bg-img" src="https://images4.alphacoders.com/130/thumb-1920-1309446.jpeg" alt="">
+                    <div class="slide-content">
+                        <div class="slide-icon">★</div>
+                        <h2>4★ Build Advisor</h2>
+                        <p>Optimize your 4★ character builds</p>
+                        <button class="slide-btn" id="card-build">Build!</button>
+                    </div>
+                </div>
+            </div>
+            <button id="left-btn"> < </button>
+            <button id="right-btn"> > </button>
+        </div>
+
+        <button id="settings-btn">⚙ Manage Roster</button>
+    </div>
+
+</div>
+
+<div id="boss-screen">
+    <canvas id="boss-canvas"></canvas>
+    <div id="boss-content">
+        <div id="boss-header">
+            <button id="boss-back-btn">← Back</button>
+            <h1>Boss Recommender</h1>
+            <div class="boss-dropdown">
+                <select id="drop-bosses">
+                    <option value="default">Select boss type</option>
+                    <option value="weekly">Weekly bosses</option>
+                    <option value="normal">Normal bosses</option>
+                </select>
+            </div>
+        </div>
+        <div id="boss-layout">
+            <div id="boss-list">
+                <!-- bosses will go here -->
+            </div>
+            <div id="boss-detail">
+                <div id="boss-detail-placeholder">
+                    <p>Select a boss to see recommendations</p>
+                </div>
+                <div id="boss-detail-content" style="display:none">
+                    <div id="detail-image">
+                        <img id="boss-image" src="" alt="">
+                    </div>
+                    <h2 id="detail-name"></h2>
+                    <p id="detail-region"></p>
+                    <div id="detail-immune"></div>
+                    <div id="detail-weakness"></div>
+                    <div id="detail-tip"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="settings-screen">
+    <canvas id="settings-canvas"></canvas>
+    <div id="settings-content">
+        <div id="settings-header">
+            <button id="settings-back-btn">← Back</button>
+            <h1>My Roster</h1>
+        </div>
+        <div id="import-section">
+            <label for="uid-input"></label><input type="text" id="uid-input" placeholder="Enter your UID">
+            <button id="import-btn">Import from Enka</button>
+            <p id="import-status"></p>
+        </div>
+        <div id="settings-layout">
+            <div id="add-character-form">
+                <h2>Add Character</h2>
+                <input type="text" id="char-name" placeholder="Character Name *">
+                <div id="char-suggestions"></div>
+                <input type="number" id="char-level" placeholder="Level (optional)">
+                <input type="text" id="char-constellation" placeholder="Constellation e.g. C0 (optional)">
+                <input type="text" id="weapon-name" placeholder="Weapon Name (optional)">
+                <div id="weapon-suggestions"></div>
+                <input type="number" id="char-weapon-level" placeholder="Weapon Level (optional)">
+
+                <p class="form-section-label">Artifacts (optional)</p>
+
+                <div id="artifact-1">
+                    <input type="text" id="artifact-flower" placeholder="Flower of Life set">
+                    <div id="flower-suggestions"></div>
+                    <input type="number" id="artifact-flower-level" placeholder="Level (0-20)">
+                </div>
+
+                <div id="artifact-2">
+                    <input type="text" id="artifact-feather" placeholder="Plume of Death set">
+                    <div id="feather-suggestions"></div>
+                    <input type="number" id="artifact-feather-level" placeholder="Level (0-20)">
+                </div>
+
+                <div id="artifact-3">
+                    <input type="text" id="artifact-sands" placeholder="Sands of Eon set">
+                    <div id="sands-suggestions"></div>
+                    <input type="number" id="artifact-sands-level" placeholder="Level (0-20)">
+                </div>
+
+                <div id="artifact-4">
+                    <input type="text" id="artifact-goblet" placeholder="Goblet of Eonothem set">
+                    <div id="goblet-suggestions"></div>
+                    <input type="number" id="artifact-goblet-level" placeholder="Level (0-20)">
+                </div>
+
+                <div id="artifact-5">
+                    <input type="text" id="artifact-circlet" placeholder="Circlet of Logos set">
+                    <div id="circlet-suggestions"></div>
+                    <input type="number" id="artifact-circlet-level" placeholder="Level (0-20)">
+                </div>
+
+                <button id="add-char-btn">Add Character</button>
+            </div>
+            <div id="character-list">
+                <h2>My Characters</h2>
+                <div id="characters-display"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="calculator-screen">
+    <canvas id="calc-canvas"></canvas>
+    <div class="title">
+        <h1>Genshin Pity Calculator</h1>
+    </div>
+
+    <div class="input-corner">
+
+        <div class="banner-dropdown">
+            <select id="banner">
+                <option value="character">Character Banner</option>
+                <option value="weapon">Weapon Banner</option>
+                <option value="chronicled">Chronicled Wish</option>
+                <option value="standard">Standard Banner</option>
+            </select>
+        </div>
+
+        <div class="pity-input">
+            <label for="quantity">Current Pity:</label>
+            <input type="number" id="quantity" name="quantity" min="0" max="90" value="0">
+        </div>
+
+        <div class="guaranteed-checkbox">
+            <input type="checkbox" id="guaranteed" name="Guaranteed?">
+            <label for="guaranteed">Is guaranteed?</label>
+        </div>
+
+        <div class="weapon-inputs" id="weapon-inputs" style="display:none;">
+            <div class="pity-input">
+                <label for="fate-points">Fate Points:</label>
+                <input type="number" id="fate-points" name="fate-points" min="0" max="1" value="0">
+            </div>
+            <div class="weapon-guaranteed-checkbox">
+                <input type="checkbox" id="featured-guaranteed" name="Featured Guaranteed?">
+                <label for="featured-guaranteed">Featured guaranteed?</label>
+            </div>
+        </div>
+
+        <div class="calculate-button">
+            <button class="calculate">Calculate!</button>
+        </div>
+
+    </div>
+
+    <div class="results-section">
+        <p id="result"></p>
+    </div>
+
+</div>
+
+<div id="wish-screen">
+    <canvas id="wish-canvas"></canvas>
+    <div id="wish-animation">
+        <div id="wish-orbs"></div>
+        <div id="wish-rays"></div>
+        <div id="wish-results">
+            <p id="wish-result-text"></p>
+            <p id="click-to-continue">Click anywhere to continue</p>
+        </div>
+    </div>
+</div>
+
+<div id="chart-screen">
+    <canvas id="river-canvas"></canvas>
+    <div id="chart-content">
+        <h1>Probability distribution at your pity:</h1>
+        <canvas id="probability-chart"></canvas>
+        <button id="chart-back-btn">Back home</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js"></script>
+<div id="transition-overlay"></div>
+</body>
+
+</html>
