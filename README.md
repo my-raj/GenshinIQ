@@ -57,4 +57,11 @@ Currently, the feature's mathematical algorithms to calculate character powers a
 in the future, the feature may include an ML layer that can do the computing and crafting of the teams against the bosses.
 
 ### Character-builder
+This feature will be able to look at a selected character, observe the character's current talents and stats, and recommend
+artifact sets and weapons in order to help maximize the character's strengths in a particular role- whether that is in
+healing, dealing damage, or shielding. Since a single character can potentially play multiple roles, the builder should also
+be able to recommend sets in order to maximize each role if the player wishes.
 
+## Long term endeavours
+
+### AI/ML layer
