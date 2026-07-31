@@ -10,7 +10,7 @@ build existing characters with the appropriate weapons and artifacts to improve 
 
 ## Technical Aspects
 
-Backend: Java, Spring Boot 4, JPA/Hibernate
-Frontend: HTML, CSS, vanilla JavaScript
-Database: H2 (file-based)
-External APIs: Enka Network API, genshin-db-api
+Backend: Java, Spring Boot 4, JPA/Hibernate  
+Frontend: HTML, CSS, vanilla JavaScript  
+Database: H2 (file-based)  
+External APIs: Enka Network API, genshin-db-api  
