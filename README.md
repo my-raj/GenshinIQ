@@ -72,6 +72,6 @@ over time.
 I plan to also introduce a chatbot feature to the application for players to discuss other genshin-related topics: with regards
 to the quests, the lore, and the storyline.
 
-#**STATUS: In progress**
+# **STATUS: In progress**
 
 This project is currently still under development.
