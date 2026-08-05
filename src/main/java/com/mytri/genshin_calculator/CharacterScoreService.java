@@ -21,6 +21,7 @@ public class CharacterScoreService {
         double flatAtkBonus = 0.0;
         double critRate = 0.05;
         double critDmg = 0.5;
+        double elementalMastery = 0.0;
         for (Artifact artifact : character.getArtifactList()) {
             for (ArtifactSubstat substat : artifact.getSubstats()) {
                 if (substat.getStatType().equals("FIGHT_PROP_ATTACK_PERCENT")) {
@@ -34,6 +35,9 @@ public class CharacterScoreService {
                 }
                 if (substat.getStatType().equals("FIGHT_PROP_CRITICAL_HURT")) {
                     critDmg += substat.getStatValue() * 0.01;
+                }
+                if (substat.getStatType().equals("FIGHT_PROP_ELEMENT_MASTERY")) {
+                    elementalMastery += substat.getStatValue();
                 }
             }
         }
@@ -51,4 +55,9 @@ public class CharacterScoreService {
         }
         return totalAtk * critMultiplier * talentMultiplier * elementMultiplier;
     }
+
+    public double scoreTeam(List<GenshinCharacter> team, List<String> bossWeaknesses, List<String> bossImmunities) {
+
+    }
+
 }
