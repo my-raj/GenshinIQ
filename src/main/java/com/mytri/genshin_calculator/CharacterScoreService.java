@@ -3,7 +3,10 @@ package com.mytri.genshin_calculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CharacterScoreService {
@@ -21,7 +24,7 @@ public class CharacterScoreService {
         double flatAtkBonus = 0.0;
         double critRate = 0.05;
         double critDmg = 0.5;
-        double elementalMastery = 0.0;
+        double elementalMastery = calculateEM(character);
         for (Artifact artifact : character.getArtifactList()) {
             for (ArtifactSubstat substat : artifact.getSubstats()) {
                 if (substat.getStatType().equals("FIGHT_PROP_ATTACK_PERCENT")) {
@@ -35,9 +38,6 @@ public class CharacterScoreService {
                 }
                 if (substat.getStatType().equals("FIGHT_PROP_CRITICAL_HURT")) {
                     critDmg += substat.getStatValue() * 0.01;
-                }
-                if (substat.getStatType().equals("FIGHT_PROP_ELEMENT_MASTERY")) {
-                    elementalMastery += substat.getStatValue();
                 }
             }
         }
@@ -57,7 +57,39 @@ public class CharacterScoreService {
     }
 
     public double scoreTeam(List<GenshinCharacter> team, List<String> bossWeaknesses, List<String> bossImmunities) {
+        double baseTeamScore = 0.0;
+        Set<String> elements = new HashSet<>();
+        double maxEM = 0.0;
+        double emBonus = 0.0;
+        List<Double> allEM = new ArrayList<>();
+        for (GenshinCharacter character : team) {
+            baseTeamScore += scoreCharacter(character, bossWeaknesses, bossImmunities);
+            elements.add(character.getElement());
+            allEM.add(calculateEM(character));
+        }
+        maxEM = allEM.stream().max(Double::compareTo).orElse(0.0);
+        if ((elements.contains("Hydro") && elements.contains("Pyro")) || (elements.contains("Cryo") && elements.contains("Pyro"))) {
+            emBonus = 2.78 * maxEM / (maxEM + 1400);
+        } else if ((elements.contains("Hydro") && elements.contains("Dendro") && elements.contains("Electro")) ||
+                    (elements.contains("Hydro") && elements.contains("Dendro")) ||
+                    (elements.contains("Pyro") && elements.contains("Electro"))) {
+            emBonus = 5 * maxEM / (maxEM + 1200);
+        } else if (elements.contains("Dendro") && elements.contains("Electro")) {
+            emBonus = 5 * maxEM / (maxEM + 1200);
+        }
+        return baseTeamScore * (1 + emBonus);
+    }
 
+    private double calculateEM(GenshinCharacter character) {
+        double em = 0.0;
+        for (Artifact artifact : character.getArtifactList()) {
+            for (ArtifactSubstat substat : artifact.getSubstats()) {
+                if (substat.getStatType().equals("FIGHT_PROP_ELEMENT_MASTERY")) {
+                    em += substat.getStatValue();
+                }
+            }
+        }
+        return em;
     }
 
 }
