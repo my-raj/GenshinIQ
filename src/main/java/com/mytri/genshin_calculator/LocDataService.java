@@ -27,19 +27,21 @@ public class LocDataService {
 
     @PostConstruct
     public void init() {
-        RestTemplate restTemplate = new RestTemplate();
-        String json = restTemplate.getForObject(
-                "https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/loc.json",
-                String.class
-        );
-        tools.jackson.databind.ObjectMapper mapper = new tools.jackson.databind.ObjectMapper();
         try {
+            RestTemplate restTemplate = new RestTemplate();
+            String json = restTemplate.getForObject(
+                    "https://raw.githubusercontent.com/EnkaNetwork/API-docs/master/store/loc.json",
+                    String.class
+            );
+            tools.jackson.databind.ObjectMapper mapper = new tools.jackson.databind.ObjectMapper();
             Map<String, Map<String, String>> fullMap = mapper.readValue(json,
                     mapper.getTypeFactory().constructMapType(Map.class, String.class,
                             mapper.getTypeFactory().constructMapType(Map.class, String.class, String.class).getRawClass()));
             locMap = fullMap.get("en");
+            System.out.println("Loaded loc.json successfully");
         } catch (Exception e) {
-            System.out.println("Failed to load loc.json: " + e.getMessage());
+            System.out.println("Failed to load loc.json: " + e.getMessage() + " - falling back to FALLBACK_NAMES only");
+            locMap = null;
         }
     }
 
