@@ -488,13 +488,19 @@ function showBossDetail(boss) {
     fetch("/recommend/" + encodeURIComponent(boss.name))
         .then(function(response) { return response.json(); })
         .then(function(teams) {
-            var html = "<h3>⚔️ Recommended Teams</h3>";
             if (teams.length === 0) {
-                html += "<p>No recommendations available.</p>";
-            } else {
+                document.getElementById("team-recommendations").innerHTML = "<p>No recommendations available.</p>";
+                return;
+            }
+            var currentTeam = 0;
+            var totalTeams = teams.length;
+
+            function renderTeamSlider() {
+                var html = "<h3>⚔️ Recommended Teams</h3>";
+                html += "<div class='team-slider'><div class='team-slider-track' id='team-slider-track'>";
                 teams.forEach(function(team, index) {
                     html += "<div class='team-card'>";
-                    html += "<h4>Team " + (index + 1) + "</h4>";
+                    html += "<h4>Team " + (index + 1) + " of " + totalTeams + "</h4>";
                     html += "<div class='team-members'>";
                     team.forEach(function(character) {
                         html += "<div class='team-member'>";
@@ -503,19 +509,41 @@ function showBossDetail(boss) {
                         html += "<span>Lv." + character.level + "</span>";
                         html += "</div>";
                     });
-                    html += "</div></div>";
+                    html += "</div>";
+                    html += "<div class='team-analysis'>Team analysis coming soon</div>";
+                    html += "</div>";
+                });
+                html += "</div></div>";
+                html += "<div class='team-slider-controls'>";
+                html += "<button class='team-slider-btn' id='team-prev-btn'>◀</button>";
+                html += "<span class='team-slider-indicator' id='team-indicator'>1 / " + totalTeams + "</span>";
+                html += "<button class='team-slider-btn' id='team-next-btn'>▶</button>";
+                html += "</div>";
+
+                document.getElementById("team-recommendations").innerHTML = html;
+
+                document.getElementById("team-prev-btn").addEventListener("click", function() {
+                    currentTeam = (currentTeam - 1 + totalTeams) % totalTeams;
+                    document.getElementById("team-slider-track").style.transform = "translateX(-" + (currentTeam * 100) + "%)";
+                    document.getElementById("team-indicator").innerText = (currentTeam + 1) + " / " + totalTeams;
+                });
+
+                document.getElementById("team-next-btn").addEventListener("click", function() {
+                    currentTeam = (currentTeam + 1) % totalTeams;
+                    document.getElementById("team-slider-track").style.transform = "translateX(-" + (currentTeam * 100) + "%)";
+                    document.getElementById("team-indicator").innerText = (currentTeam + 1) + " / " + totalTeams;
+                });
+
+                document.querySelectorAll(".team-member-icon").forEach(function(img) {
+                    fetch("https://genshin-db-api.vercel.app/api/v5/characters?query=" + encodeURIComponent(img.dataset.name))
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        if (data.images) img.src = data.images.hoyowiki_icon;
+                    });
                 });
             }
-            document.getElementById("team-recommendations").innerHTML = html;
 
-            // Load character icons
-            document.querySelectorAll(".team-member-icon").forEach(function(img) {
-                fetch("https://genshin-db-api.vercel.app/api/v5/characters?query=" + encodeURIComponent(img.dataset.name))
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    if (data.images) img.src = data.images.hoyowiki_icon;
-                });
-            });
+            renderTeamSlider();
         })
         .catch(function() {
             document.getElementById("team-recommendations").innerHTML = "<p>Failed to load recommendations.</p>";

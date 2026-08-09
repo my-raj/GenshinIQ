@@ -39,12 +39,15 @@ public class TeamGeneratorService {
             List<GenshinCharacter> team = new ArrayList<>();
             if (i >= mainDpsList.size()) break;
             team.add(mainDpsList.get(i));
-            if (!healerList.isEmpty()) team.add(healerList.get(0));
+
+            // Use different healer for each team
+            if (i < healerList.size()) team.add(healerList.get(i));
+            else if (!healerList.isEmpty()) team.add(healerList.get(0));
+
+            // Fill remaining slots skipping already used characters
             int k = 0;
             for (GenshinCharacter character : supportList) {
-                if (k == 2) {
-                    break;
-                }
+                if (k == 2) break;
                 if (!team.contains(character)) {
                     team.add(character);
                     k++;
