@@ -482,6 +482,44 @@ function showBossDetail(boss) {
     document.getElementById("detail-tip").innerHTML =
         "<h3>💡 Key Mechanic</h3>" +
         "<p>" + boss.tip + "</p>";
+
+    document.getElementById("team-recommendations").innerHTML = "<p>Loading recommendations...</p>";
+
+    fetch("/recommend/" + encodeURIComponent(boss.name))
+        .then(function(response) { return response.json(); })
+        .then(function(teams) {
+            var html = "<h3>⚔️ Recommended Teams</h3>";
+            if (teams.length === 0) {
+                html += "<p>No recommendations available.</p>";
+            } else {
+                teams.forEach(function(team, index) {
+                    html += "<div class='team-card'>";
+                    html += "<h4>Team " + (index + 1) + "</h4>";
+                    html += "<div class='team-members'>";
+                    team.forEach(function(character) {
+                        html += "<div class='team-member'>";
+                        html += "<img src='' class='team-member-icon' data-name='" + character.name + "'>";
+                        html += "<span>" + character.name + "</span>";
+                        html += "<span>Lv." + character.level + "</span>";
+                        html += "</div>";
+                    });
+                    html += "</div></div>";
+                });
+            }
+            document.getElementById("team-recommendations").innerHTML = html;
+
+            // Load character icons
+            document.querySelectorAll(".team-member-icon").forEach(function(img) {
+                fetch("https://genshin-db-api.vercel.app/api/v5/characters?query=" + encodeURIComponent(img.dataset.name))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.images) img.src = data.images.hoyowiki_icon;
+                });
+            });
+        })
+        .catch(function() {
+            document.getElementById("team-recommendations").innerHTML = "<p>Failed to load recommendations.</p>";
+        });
 }
 
 // Back button

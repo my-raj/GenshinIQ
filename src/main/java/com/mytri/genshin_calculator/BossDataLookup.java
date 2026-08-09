@@ -9,8 +9,8 @@ public class BossDataLookup {
 
     static {
         BOSSES.put("Stormterror Dvalin", new BossInfo(
-                List.of(),
-                List.of("Frozen", "Stun", "Petrification")
+                List.of(), // weak
+                List.of() // immune
         ));
         BOSSES.put("Andrius", new BossInfo(
                 List.of("Pyro", "Electro"),
@@ -18,11 +18,51 @@ public class BossDataLookup {
         ));
         BOSSES.put("Childe", new BossInfo(
                 List.of("Pyro", "Dendro"),
+                List.of("Hydro", "Electro")
+        ));
+        BOSSES.put("Azhdaha", new BossInfo(
+                List.of(),
+                List.of("Geo")
+        ));
+        BOSSES.put("La Signora", new BossInfo(
+                List.of("Pyro", "Hydro", "Electro"),
+                List.of("Cryo", "Pyro")
+        ));
+        BOSSES.put("Magatsu Mitake Narukami", new BossInfo(
+                List.of("Cryo", "Pyro", "Electro"),
+                List.of("Electro")
+        ));
+        BOSSES.put("Everlasting Lord of Arcane Wisdom", new BossInfo(
+                List.of("Pyro", "Cryo", "Dendro"),
+                List.of("Electro", "Hydro")
+        ));
+        BOSSES.put("Guardian of Apep's Oasis", new BossInfo(
+                List.of("Pyro", "Electro", "Hydro"),
+                List.of("Dendro")
+        ));
+        BOSSES.put("All-Devouring Narwhal", new BossInfo(
+                List.of(),
                 List.of("Hydro")
         ));
-        BOSSES.put("Childe", new BossInfo(
-                List.of("Pyro", "Dendro"),
-                List.of("Hydro")
+        BOSSES.put("The Knave (Arlecchino)", new BossInfo(
+                List.of("Hydro", "Cryo"),
+                List.of("Pyro")
+        ));
+        BOSSES.put("Lord of Eroded Primal Fire", new BossInfo(
+                List.of("Hydro", "Electro"),
+                List.of("Pyro")
+        ));
+        BOSSES.put("The Game Before the Gate", new BossInfo(
+                List.of("Electro", "Cryo", "Dendro"),
+                List.of()
+        ));
+        BOSSES.put("Heretic of the False Moon", new BossInfo(
+                List.of("Anemo", "Geo"),
+                List.of()
+        ));
+        BOSSES.put("Exalted Master of the Heretical Path", new BossInfo(
+                List.of("Pyro", "Electro", "Cryo"),
+                List.of()
         ));
     }
 

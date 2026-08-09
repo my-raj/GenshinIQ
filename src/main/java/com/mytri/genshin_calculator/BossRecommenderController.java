@@ -15,6 +15,11 @@ public class BossRecommenderController {
     private GenshinCharacterRepository characterRepository;
     @GetMapping("/{bossName}")
     public List<List<GenshinCharacter>> recommendTeams(@PathVariable String bossName) {
-        return null; // fill in next
+        BossInfo bossInfo = BossDataLookup.getBossInfo(bossName);
+        if (bossInfo == null) {
+            return List.of();
+        }
+        List<GenshinCharacter> characters = characterRepository.findAll();
+        return teamGeneratorService.generateTeams(characters, bossInfo.getWeaknesses(), bossInfo.getImmunities());
     }
 }
