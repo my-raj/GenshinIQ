@@ -46,6 +46,7 @@ public class CharacterScoreService {
         double critMultiplier = 1 + critRate * critDmg;
         int normalAttackLevel = character.getNormalAttackLevel() != null ? character.getNormalAttackLevel() : 1;
         double talentMultiplier = talentMultiplierService.getMultiplier(character.getAvatarId(), "normalAttack", normalAttackLevel);
+        if (talentMultiplier == 0.0) talentMultiplier = 0.5;
         String element = character.getElement();
         double elementMultiplier = 1;
         if (element != null && bossImmunities.contains(element)) {
