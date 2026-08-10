@@ -83,8 +83,8 @@ public class CharacterScoreService {
         double bestScore = 0.0;
         for (ScalingStat stat : scalingStats) {
             double baseScore;
-            if (stat == ScalingStat.HP) baseScore = totalHp;
-            else if (stat == ScalingStat.DEF) baseScore = totalDef;
+            if (stat == ScalingStat.HP) baseScore = totalHp / 15.0;
+            else if (stat == ScalingStat.DEF) baseScore = totalDef / 5.0;
             else if (stat == ScalingStat.EM) baseScore = elementalMastery * 10;
             else baseScore = totalAtk;
             double score = baseScore * critMultiplier * talentMultiplier * elementMultiplier * roleMultiplier;
