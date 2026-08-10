@@ -24,6 +24,10 @@ public class CharacterScoreService {
         double flatAtkBonus = 0.0;
         double critRate = 0.05;
         double critDmg = 0.5;
+        double hpBonus = 0.0;
+        double flatHpBonus = 0.0;
+        double defBonus = 0.0;
+        double flatDefBonus = 0.0;
         double elementalMastery = calculateEM(character);
         for (Artifact artifact : character.getArtifactList()) {
             for (ArtifactSubstat substat : artifact.getSubstats()) {
@@ -39,9 +43,23 @@ public class CharacterScoreService {
                 if (substat.getStatType().equals("FIGHT_PROP_CRITICAL_HURT")) {
                     critDmg += substat.getStatValue() * 0.01;
                 }
+                if (substat.getStatType().equals("FIGHT_PROP_HP_PERCENT")) {
+                    hpBonus += substat.getStatValue() * 0.01;
+                }
+                if (substat.getStatType().equals("FIGHT_PROP_HP")) {
+                    flatHpBonus += substat.getStatValue();
+                }
+                if (substat.getStatType().equals("FIGHT_PROP_DEFENSE_PERCENT")) {
+                    defBonus += substat.getStatValue() * 0.01;
+                }
+                if (substat.getStatType().equals("FIGHT_PROP_DEFENSE")) {
+                    flatDefBonus += substat.getStatValue();
+                }
             }
         }
         double totalAtk = totalBaseAtk * (1 + atkBonus) + flatAtkBonus;
+        double totalHp = (character.getBaseHp() != null ? character.getBaseHp() : 0.0) * (1 + hpBonus) + flatHpBonus;
+        double totalDef = (character.getBaseDef() != null ? character.getBaseDef() : 0.0) * (1 + defBonus) + flatDefBonus;
         critRate = Math.min(critRate, 1.0);
         double critMultiplier = 1 + critRate * critDmg;
         int normalAttackLevel = character.getNormalAttackLevel() != null ? character.getNormalAttackLevel() : 1;
@@ -54,7 +72,25 @@ public class CharacterScoreService {
         } else if (element != null && bossWeaknesses.contains(element)) {
             elementMultiplier = 1.5;
         }
-        return totalAtk * critMultiplier * talentMultiplier * elementMultiplier;
+        CharacterRoles role = RoleLookup.getRole(character.getName());
+        double roleMultiplier = 1.0;
+        if (role == CharacterRoles.SUPPORT) roleMultiplier = 1.5;
+        else if (role == CharacterRoles.HEALER) roleMultiplier = 1.4;
+        else if (role == CharacterRoles.SHIELDER) roleMultiplier = 1.3;
+        else if (role == CharacterRoles.SUB_DPS) roleMultiplier = 1.2;
+
+        List<ScalingStat> scalingStats = ScalingStatLookup.getScalingStats(character.getName());
+        double bestScore = 0.0;
+        for (ScalingStat stat : scalingStats) {
+            double baseScore;
+            if (stat == ScalingStat.HP) baseScore = totalHp;
+            else if (stat == ScalingStat.DEF) baseScore = totalDef;
+            else if (stat == ScalingStat.EM) baseScore = elementalMastery * 10;
+            else baseScore = totalAtk;
+            double score = baseScore * critMultiplier * talentMultiplier * elementMultiplier * roleMultiplier;
+            if (score > bestScore) bestScore = score;
+        }
+        return bestScore;
     }
 
     public double scoreTeam(List<GenshinCharacter> team, List<String> bossWeaknesses, List<String> bossImmunities) {
