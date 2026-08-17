@@ -24,7 +24,7 @@ public class BossRecommenderController {
             return List.of();
         }
         List<GenshinCharacter> characters = characterRepository.findAll();
-        return teamGeneratorService.generateTeams(characters, bossInfo.getWeaknesses(), bossInfo.getImmunities());
+        return teamGeneratorService.generateTeams(characters, bossInfo.getWeaknesses(), bossInfo.getImmunities(), bossName);
     }
     @GetMapping("/scores/{bossName}")
     public Map<String, Double> getScores(@PathVariable String bossName) {
@@ -33,7 +33,7 @@ public class BossRecommenderController {
         List<GenshinCharacter> characters = characterRepository.findAll();
         Map<String, Double> scores = new HashMap<>();
         for (GenshinCharacter character : characters) {
-            scores.put(character.getName(), characterScoreService.scoreCharacter(character, bossInfo.getWeaknesses(), bossInfo.getImmunities()));
+            scores.put(character.getName(), characterScoreService.scoreCharacter(character, bossInfo.getWeaknesses(), bossInfo.getImmunities(), bossName));
         }
         return scores.entrySet().stream()
                 .sorted(Map.Entry.<String, Double>comparingByValue().reversed())

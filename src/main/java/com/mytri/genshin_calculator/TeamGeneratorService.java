@@ -12,14 +12,14 @@ import java.util.Map;
 public class TeamGeneratorService {
     @Autowired
     private CharacterScoreService characterScoreService;
-    public List<List<GenshinCharacter>> generateTeams(List<GenshinCharacter> allCharacters, List<String> bossWeaknesses, List<String> bossImmunities) {
+    public List<List<GenshinCharacter>> generateTeams(List<GenshinCharacter> allCharacters, List<String> bossWeaknesses, List<String> bossImmunities, String bossName) {
         Map<GenshinCharacter, Double> scores = new HashMap<>();
         List<GenshinCharacter> mainDpsList = new ArrayList<>();
         List<GenshinCharacter> healerList = new ArrayList<>();
         List<GenshinCharacter> supportList = new ArrayList<>();
         List<List<GenshinCharacter>> teams = new ArrayList<>();
         for (GenshinCharacter character : allCharacters) {
-            double score = characterScoreService.scoreCharacter(character, bossWeaknesses, bossImmunities);
+            double score = characterScoreService.scoreCharacter(character, bossWeaknesses, bossImmunities, bossName);
             scores.put(character, score);
             if (RoleLookup.getRole(character.getName()) == CharacterRoles.MAIN_DPS) {
                 mainDpsList.add(character);

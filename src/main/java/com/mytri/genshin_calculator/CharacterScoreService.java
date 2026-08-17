@@ -15,7 +15,7 @@ public class CharacterScoreService {
     @Autowired
     private TalentMultiplierService talentMultiplierService;
 
-    public double scoreCharacter(GenshinCharacter character, List<String> bossWeaknesses, List<String> bossImmunities) {
+    public double scoreCharacter(GenshinCharacter character, List<String> bossWeaknesses, List<String> bossImmunities, String bossName) {
         double baseAtk = character.getBaseAtk() != null ? character.getBaseAtk() : 0.0;
         double baseWeaponAtk = (character.getWeapon() != null && character.getWeapon().getBaseAttack() != null)
                 ? character.getWeapon().getBaseAttack() : 0.0;
@@ -72,6 +72,20 @@ public class CharacterScoreService {
         } else if (element != null && bossWeaknesses.contains(element)) {
             elementMultiplier = 1.5;
         }
+
+        List<BossFlag> bossFlags = BossFlagLookup.getFlags(bossName);
+        List<CharacterFlag> characterFlags = CharacterFlagLookup.getFlags(character.getName());
+        double flagPenalty = 1.0;
+        if (bossFlags.contains(BossFlag.CRYO_AURA) && characterFlags.contains(CharacterFlag.SELF_APPLIES_HYDRO)) {
+            flagPenalty = 0.3;
+        }
+        if (bossFlags.contains(BossFlag.PYRO_AURA) && characterFlags.contains(CharacterFlag.SELF_APPLIES_CRYO)) {
+            flagPenalty = 0.3;
+        }
+        if (bossFlags.contains(BossFlag.ELECTRO_AURA) && characterFlags.contains(CharacterFlag.SELF_APPLIES_HYDRO)) {
+            flagPenalty = 0.3;
+        }
+
         CharacterRoles role = RoleLookup.getRole(character.getName());
         double roleMultiplier = 1.0;
         if (role == CharacterRoles.SUPPORT) roleMultiplier = 1.5;
@@ -90,17 +104,17 @@ public class CharacterScoreService {
             double score = baseScore * critMultiplier * talentMultiplier * elementMultiplier * roleMultiplier;
             if (score > bestScore) bestScore = score;
         }
-        return bestScore;
+        return bestScore * flagPenalty;
     }
 
-    public double scoreTeam(List<GenshinCharacter> team, List<String> bossWeaknesses, List<String> bossImmunities) {
+    public double scoreTeam(List<GenshinCharacter> team, List<String> bossWeaknesses, List<String> bossImmunities, String bossName) {
         double baseTeamScore = 0.0;
         Set<String> elements = new HashSet<>();
         double maxEM = 0.0;
         double emBonus = 0.0;
         List<Double> allEM = new ArrayList<>();
         for (GenshinCharacter character : team) {
-            baseTeamScore += scoreCharacter(character, bossWeaknesses, bossImmunities);
+            baseTeamScore += scoreCharacter(character, bossWeaknesses, bossImmunities, bossName);
             elements.add(character.getElement());
             allEM.add(calculateEM(character));
         }
